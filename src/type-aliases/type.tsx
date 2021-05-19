@@ -11,6 +11,11 @@ export type Questions = {
 }
 
 export type Quiz = {
+    id: number;
     quizName: string,
     questions: Questions[]
+}
+
+export type Quizs = {
+    quiz: Quiz[]
 }
