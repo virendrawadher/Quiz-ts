@@ -1,18 +1,21 @@
-import { Link } from "react-router-dom"
-import QuizData  from "../data/Quizdata"
+import { Link } from 'react-router-dom';
+import QuizData from '../data/Quizdata';
+import { useQuiz } from '../reducer/quiz-reducer';
 
 const Home = () => {
-    return (
-        <div>
-            {
-                QuizData.quiz.map((q, i) => {
-                    return <Link to = {`/quiz/${i}`}>
-                        <p>{q.quizName}</p> 
-                    </Link>
-                })
-            }
-        </div>
-    )
-}
+	const { dispatch } = useQuiz();
 
-export default Home
+	return (
+		<div>
+			{QuizData.quiz.map((q, i) => {
+				return (
+					<Link to={`/quiz/${i}`} onClick={() => dispatch({ type: 'RESET' })}>
+						<p>{q.quizName}</p>
+					</Link>
+				);
+			})}
+		</div>
+	);
+};
+
+export default Home;
