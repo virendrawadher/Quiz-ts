@@ -9,6 +9,9 @@ type IntialState = {
 	showQuiz: boolean;
 	timer: number;
 	selected: Options;
+	isSelected: Boolean;
+	showRules: Boolean;
+	token: String;
 };
 
 const intialState: IntialState = {
@@ -20,6 +23,9 @@ const intialState: IntialState = {
 		answer: '',
 		isRight: null,
 	},
+	isSelected: false,
+	showRules: true,
+	token: '',
 };
 
 type PAYLOAD = {
@@ -35,7 +41,10 @@ type ACTIONS =
 	| { type: 'SET_SCORE'; payload: PAYLOAD }
 	| { type: 'RESET' }
 	| { type: 'TIMER'; payload: ID }
-	| { type: 'SET_NEXTQUES'; payload: ID };
+	| { type: 'SET_NEXTQUES'; payload: ID }
+	| { type: 'SET_PREVQUES'; payload: ID }
+	| { type: 'SET_START_QUIZ' }
+	| { type: 'SET_TOKEN'; payload: String };
 
 const QuizContext = createContext<{
 	state: IntialState;
@@ -73,6 +82,7 @@ const ReducerQuiz = (state: IntialState, actions: ACTIONS) => {
 			return {
 				...state,
 				selected: actions.payload.option,
+				isSelected: true,
 				currentScore: score,
 			};
 
@@ -86,12 +96,30 @@ const ReducerQuiz = (state: IntialState, actions: ACTIONS) => {
 					...state,
 					currentQuestion: nextQues,
 					selected: { ...state.selected, isRight: null },
+					isSelected: false,
 					timer: 10,
 				};
 			} else {
 				return {
 					...state,
+					isSelected: false,
 					showQuiz: false,
+				};
+			}
+
+		case 'SET_PREVQUES':
+			const prevQues = state.currentQuestion - 1;
+			if (prevQues >= 0) {
+				return {
+					...state,
+					currentQuestion: prevQues,
+					selected: { ...state.selected, isRight: null },
+					isSelected: false,
+					timer: 10,
+				};
+			} else {
+				return {
+					...state,
 				};
 			}
 
@@ -101,29 +129,47 @@ const ReducerQuiz = (state: IntialState, actions: ACTIONS) => {
 				currentQuestion: 0,
 				currentScore: 0,
 				timer: 10,
+				selected: { ...state.selected, isRight: null },
+				isSelected: false,
+				// showQuiz: true,
+				showRules: true,
+				token: '',
+			};
+
+		case 'SET_START_QUIZ':
+			return {
+				...state,
+				showRules: false,
 				showQuiz: true,
+				timer: 10,
 			};
 
 		case 'TIMER':
-			if (state.timer === 0) {
-				const nextQues = state.currentQuestion + 1;
-				if (
-					nextQues <
-					QuizData.quiz[parseInt(actions.payload.id, 10)].questions.length
-				) {
-					return {
-						...state,
-						currentQuestion: nextQues,
-						timer: 10,
-					};
-				} else {
-					return {
-						...state,
-						showQuiz: false,
-					};
-				}
-			}
-			return { ...state, timer: state.timer - 1 };
+			// if (state.timer === 0) {
+			// 	const nextQues = state.currentQuestion + 1;
+			// 	if (
+			// 		nextQues <
+			// 		QuizData.quiz[parseInt(actions.payload.id, 10)].questions.length
+			// 	) {
+			// 		return {
+			// 			...state,
+			// 			currentQuestion: nextQues,
+			// 			selected: { ...state.selected, isRight: null },
+			// 			isSelected: false,
+			// 			timer: 10,
+			// 		};
+			// 	} else {
+			// 		return {
+			// 			...state,
+			// 			showQuiz: false,
+			// 		};
+			// 	}
+			// }
+			// return { ...state, timer: state.timer - 1 };
+			return { ...state };
+
+		case 'SET_TOKEN':
+			return { ...state, token: actions.payload };
 
 		default:
 			return { ...state };
