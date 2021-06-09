@@ -1,20 +1,79 @@
-import React from 'react';
-import { Route, Routes, Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Route, Routes } from 'react-router-dom';
 import './App.css';
-import PlayingQuiz from './components/playquiz';
-import Home from './components/home';
+import PlayingQuiz from './pages/playquiz';
+import Home from './pages/home';
+import Login from './pages/login';
+import Layout from './components/layout';
+import PrivateRoute from './privateroute/privateroute';
+import { createMuiTheme, ThemeProvider } from '@material-ui/core';
+import axios from 'axios';
+import Rules from './components/rules';
+import { useQuiz } from './reducer/quiz-reducer';
+
+const theme = createMuiTheme({
+	palette: {
+		primary: {
+			light: '#F3F4F6',
+			main: '#34D399',
+		},
+		secondary: {
+			light: '#F9FAFB',
+			main: '#f77f00',
+		},
+	},
+	typography: {
+		fontFamily: 'Playfair Display, serif;',
+		fontWeightRegular: 400,
+		fontWeightMedium: 500,
+	},
+});
 
 function App() {
+	const [isUserLogin, setIsUserLogIn] = useState(true);
+
+	const { state } = useQuiz();
+
+	// useEffect(() => {
+	// 	(async function () {
+	// 		try {
+	// 			const response = await axios.post('http://localhost:3000/login', {
+	// 				email: 'Wain@google.com',
+	// 				password: 'Wain123',
+	// 			});
+
+	// 			console.log({ response });
+
+	// 			const res = await axios.get('http://localhost:3000/dummy', {
+	// 				headers: {
+	// 					Authorization: response.data.login.token,
+	// 				},
+	// 			});
+	// 			console.log({ res });
+	// 		} catch (error) {
+	// 			console.log(error);
+	// 		}
+	// 	})();
+	// }, []);
 	return (
 		<div className='App'>
-			<h1>Quiz</h1>
-			<nav>
-				<Link to='/quiz'>Quiz</Link>
-			</nav>
-			<Routes>
-				<Route path='/' element={<Home />} />
-				<Route path='/quiz/:id' element={<PlayingQuiz />} />
-			</Routes>
+			<ThemeProvider theme={theme}>
+				<Layout>
+					<Routes>
+						<Route path='/' element={<Home />} />
+						{state.showRules ? (
+							<Route path='/quiz/:id/rules' element={<Rules />} />
+						) : (
+							<PrivateRoute
+								path='/quiz/:id'
+								element={<PlayingQuiz />}
+								isUserLogin={isUserLogin}
+							/>
+						)}
+						<Route path='/login' element={<Login />} />
+					</Routes>
+				</Layout>
+			</ThemeProvider>
 		</div>
 	);
 }
