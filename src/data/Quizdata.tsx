@@ -8,7 +8,6 @@ const QuizData: Quizs = {
 			questions: [
 				{
 					question: 'When was JavaScript Invented',
-					code: null,
 					points: 10,
 					options: [
 						{
@@ -31,7 +30,6 @@ const QuizData: Quizs = {
 				},
 				{
 					question: 'How is the IF statement written in javascript',
-					code: null,
 					points: 10,
 					options: [
 						{
@@ -54,7 +52,6 @@ const QuizData: Quizs = {
 				},
 				{
 					question: "What is mean by 'this' keyword in JavaScript",
-					code: null,
 					points: 10,
 					options: [
 						{
@@ -77,7 +74,6 @@ const QuizData: Quizs = {
 				},
 				{
 					question: 'In which case types JavaScript variables are declared',
-					code: null,
 					points: 10,
 					options: [
 						{
@@ -100,14 +96,7 @@ const QuizData: Quizs = {
 				},
 				{
 					question: 'What is Output of Following code',
-					code: `let a = 10 
-                function b(a){ 
-                    a = a + 5
-                } 
-                function d(){
-                    alert(a)
-                } 
-                d()`,
+					code: `https://carbon.now.sh/embed?bg=rgba%28255%2C255%2C255%2C1%29&t=blackboard&wt=none&l=auto&ds=false&dsyoff=20px&dsblur=68px&wc=true&wa=false&pv=46px&ph=56px&ln=false&fl=1&fm=IBM+Plex+Mono&fs=14px&lh=143%25&si=false&es=2x&wm=false&code=let%2520a%2520%253D%252010%2520%250Afunction%2520b%28a%29%257B%2520%250A%2520%2520%2520%2520a%2520%253D%2520a%2520%252B%25205%250A%257D%2520%250Afunction%2520d%28%29%257B%250A%2520%2520%2520%2520alert%28a%29%250A%257D%2520%250Ad%28%29`,
 					points: 10,
 					options: [
 						{
@@ -130,7 +119,6 @@ const QuizData: Quizs = {
 				},
 				{
 					question: 'What are the data Structure in JavaScript',
-					code: null,
 					points: 10,
 					options: [
 						{
@@ -160,7 +148,6 @@ const QuizData: Quizs = {
 				{
 					question: 'dummy',
 					points: 10,
-					code: null,
 					options: [
 						{
 							answer: '123',
@@ -175,7 +162,6 @@ const QuizData: Quizs = {
 				{
 					question: 'dummy',
 					points: 10,
-					code: null,
 					options: [
 						{
 							answer: '123',
