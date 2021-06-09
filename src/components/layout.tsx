@@ -34,6 +34,11 @@ const Layout: React.FC = ({ children }) => {
 				name: 'Result',
 				active: false,
 			},
+			{
+				id: '3',
+				name: 'Login',
+				active: false,
+			},
 		],
 	};
 
@@ -49,8 +54,10 @@ const Layout: React.FC = ({ children }) => {
 
 		if (active[findIndexOfActive].name === 'Home') {
 			navigate('/');
-		} else {
+		} else if (active[findIndexOfActive].name === 'Result') {
 			navigate('/result');
+		} else {
+			navigate('/login');
 		}
 	};
 
@@ -76,9 +83,9 @@ const Layout: React.FC = ({ children }) => {
 							{op.name}
 						</Button>
 					))}
-					<Button variant='outlined' className={classes.loginButton}>
+					{/* <Button variant='outlined' className={classes.loginButton}>
 						Login
-					</Button>
+					</Button> */}
 				</ToolBar>
 			</AppBar>
 
