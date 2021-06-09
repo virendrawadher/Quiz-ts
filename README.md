@@ -1,1 +1,1 @@
-# quiz-ts
+# Quiz-ts
