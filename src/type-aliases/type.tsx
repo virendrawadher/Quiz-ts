@@ -6,7 +6,7 @@ export type Options = {
 export type Questions = {
 	question: string;
 	points: number;
-	code: string | null;
+	code?: string;
 	options: Options[];
 };
 
