@@ -19,6 +19,7 @@ import { useStylesQuiz } from '../styles/quizstyles';
 import { makeStyles } from '@material-ui/core';
 import axios from 'axios';
 import { useQuiz } from '../reducer/quiz-reducer';
+import { useNavigate } from 'react-router';
 
 const useStyles = makeStyles((theme: Theme) => {
 	return {
@@ -33,6 +34,8 @@ function Login() {
 	const classes = useStylesQuiz();
 
 	const classess = useStyles();
+
+	const navigate = useNavigate();
 
 	const { state, dispatch } = useQuiz();
 
@@ -74,6 +77,7 @@ function Login() {
 			if (data.success) {
 				dispatch({ type: 'SET_TOKEN', payload: data.login.token });
 				setLoginCredential({ ...loginCredential, showError: false, error: '' });
+				navigate('/');
 			}
 		} catch (error) {
 			setLoginCredential({
@@ -85,10 +89,9 @@ function Login() {
 			dispatch({ type: 'RESET' });
 		}
 	};
-
-	console.log(state.token, 'token');
-
-	console.log({ loginCredential });
+	if (state.token) {
+		localStorage.setItem('token', JSON.stringify(state.token));
+	}
 	return (
 		<div>
 			<Container className={classes.container}>
@@ -157,7 +160,7 @@ function Login() {
 									New user ?{' '}
 									<Link
 										to='/register'
-										style={{ textDecoration: 'none', color: 'inherit' }}>
+										style={{ textDecoration: 'none', color: '#ff0f3c' }}>
 										Register
 									</Link>
 								</Typography>

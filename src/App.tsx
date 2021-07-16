@@ -10,6 +10,7 @@ import { createMuiTheme, ThemeProvider } from '@material-ui/core';
 import axios from 'axios';
 import Rules from './components/rules';
 import { useQuiz } from './reducer/quiz-reducer';
+import Register from './pages/register';
 
 const theme = createMuiTheme({
 	palette: {
@@ -71,6 +72,7 @@ function App() {
 							/>
 						)}
 						<Route path='/login' element={<Login />} />
+						<Route path='/register' element={<Register />} />
 					</Routes>
 				</Layout>
 			</ThemeProvider>
