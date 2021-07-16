@@ -11,7 +11,7 @@ router
 
 router.route('/login').post(LoginController.login_post);
 
-router.get('/dummy', checkUser, async (req, res) => {
+router.get('/dummys', checkUser, async (req, res) => {
 	res.json({
 		message: 'User login',
 	});

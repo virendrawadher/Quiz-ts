@@ -5,19 +5,19 @@ const bcrypt = require('bcrypt');
 const signupSchema = new Schema({
 	username: {
 		type: String,
-		required: [true, 'Username cannot be blank'],
+		required: [true, 'Username should not blank'],
 	},
 	email: {
 		type: String,
 		required: [true, 'Please enter a email'],
 		unique: true,
-		validate: [/.+\@.+\..+/, 'Enter valid email address '],
+		validate: [/.+\@.+\..+/, 'Enter valid email'],
 		lowercase: true,
 	},
 	password: {
 		type: String,
 		required: [true, 'Please Enter password'],
-		min: [6, 'Minimum password length is 6 character'],
+		minLength: 6,
 	},
 });
 

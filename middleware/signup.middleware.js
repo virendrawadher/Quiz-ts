@@ -2,15 +2,25 @@ const jwt = require('jsonwebtoken');
 
 const errorHandler = (err) => {
 	console.log(err.message, err.code);
-	let errors = { email: '', password: '' };
+	let errors = { email: '', password: '', username: '' };
 
+	// console.log(err.errors.email.path, 'path');
 	if (err.message == 'SignUp validation failed: email: Please enter a email') {
-		errors.email = 'Please enter a email';
+		console.log(err.errors, 'message');
+		errors.email = 'Email field should not be empty';
+		return errors;
+	}
+	if (err.message == 'SignUp validation failed: email: Enter valid email') {
+		errors.email = 'Please enter valid email address';
 		return errors;
 	}
 
-	if (err.message === 'Enter valid email address') {
-		errors.email = err.message;
+	if (
+		err.message ==
+		'SignUp validation failed: username: Username should not blank'
+	) {
+		errors.username = 'Username should be not empty';
+		return errors;
 	}
 
 	if (err.code === 11000) {
@@ -27,6 +37,14 @@ const errorHandler = (err) => {
 	}
 	if (err.message === 'incorrect email') {
 		errors.email = 'This email is not registered';
+	}
+
+	if (err == 'Password should be atleast 6 character') {
+		errors.password = 'Password should be atleast 6 character';
+	}
+
+	if (err == 'Username or email or password should not be empty') {
+		errors.email = 'Username or email or password should not be empty';
 	}
 
 	return errors;

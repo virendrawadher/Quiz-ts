@@ -23,25 +23,34 @@ module.exports.signup_get = async (req, res) => {
 module.exports.signup_post = async (req, res) => {
 	try {
 		let { username, email, password } = req.body;
+		console.log(req.body);
+		if (username && email && password) {
+			if (password.length >= 6) {
+				const salt = await bcrypt.genSalt();
+				password = await bcrypt.hash(password, salt);
+				const newSignup = { username, email, password };
 
-		const salt = await bcrypt.genSalt();
-		password = await bcrypt.hash(password, salt);
-		const newSignup = { username, email, password };
+				const saveSignup = await SignUp.create(newSignup);
 
-		const saveSignup = await SignUp.create(newSignup);
-
-		res.status(201).json({
-			success: true,
-			user: {
-				_id: saveSignup._id,
-				email: saveSignup.email,
-				username: saveSignup.username,
-			},
-		});
+				res.status(201).json({
+					success: true,
+					user: {
+						_id: saveSignup._id,
+						email: saveSignup.email,
+						username: saveSignup.username,
+					},
+				});
+			} else {
+				throw 'Password should be atleast 6 character';
+			}
+		} else {
+			throw 'Username or email or password should not be empty';
+		}
 	} catch (error) {
+		console.log(error, 'errors');
 		const err = errorHandler(error);
-		console.log({ error });
-		response.status(400).json({
+		console.log(err, 'error');
+		res.json({
 			success: false,
 			err,
 		});

@@ -12,7 +12,7 @@ module.exports.login_post = async (req, res) => {
 
 		const token = createToken(login._id);
 
-		// console.log({ token });
+		console.log({ token });
 
 		res.json({
 			success: true,
