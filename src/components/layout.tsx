@@ -6,6 +6,7 @@ import Avatar from '@material-ui/core/Avatar';
 import { useStylesLayout } from '../styles/layoutstyle';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useQuiz } from '../reducer/quiz-reducer';
 
 type NavOption = {
 	nav: Nav[];
@@ -21,6 +22,7 @@ const Layout: React.FC = ({ children }) => {
 	const classes = useStylesLayout();
 
 	const navigate = useNavigate();
+	const {state, dispatch} = useQuiz()
 
 	const navOption: NavOption = {
 		nav: [
@@ -33,12 +35,7 @@ const Layout: React.FC = ({ children }) => {
 				id: '2',
 				name: 'Result',
 				active: false,
-			},
-			{
-				id: '3',
-				name: 'Login',
-				active: false,
-			},
+			}
 		],
 	};
 
@@ -60,6 +57,20 @@ const Layout: React.FC = ({ children }) => {
 			navigate('/login');
 		}
 	};
+	
+	const isLogin = (e: any) => {
+		if(e.target.innerText.toLowerCase() === 'login'){
+			navigate('/login')
+		}
+		else if(e.target.innerText.toLowerCase() === 'logout'){
+			localStorage.removeItem('token')
+			navigate('/login')
+			dispatch({type: 'RESET'})			
+		}
+		console.log(e.target.innerText)
+		console.log(e)
+	}
+
 
 	return (
 		<div>
@@ -83,9 +94,9 @@ const Layout: React.FC = ({ children }) => {
 							{op.name}
 						</Button>
 					))}
-					{/* <Button variant='outlined' className={classes.loginButton}>
-						Login
-					</Button> */}
+					<Button variant='outlined' className={classes.loginButton} onClick={(e: any) => isLogin(e)}>
+						{state.token.length > 0 ? 'Logout' : 'Login' }
+					</Button>
 				</ToolBar>
 			</AppBar>
 

@@ -29,15 +29,19 @@ const useStyles = makeStyles((theme: Theme) => {
 });
 
 const Home = () => {
-	const { dispatch } = useQuiz();
+	const { dispatch, state } = useQuiz();
 
 	const navigate = useNavigate();
 
 	const classes = useStyles();
 
 	const playQuiz = (i: Number) => {
-		navigate(`/quiz/${i}/rules`);
-		dispatch({ type: 'RESET' });
+		if(state.token.length > 0){			
+			navigate(`/quiz/${i}/rules`);
+			dispatch({ type: 'RESET' });
+		}else {
+			navigate('/login')
+		}
 	};
 
 	return (
