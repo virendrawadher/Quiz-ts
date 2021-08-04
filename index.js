@@ -10,6 +10,7 @@ db_connect;
 const Dummy = require('./model/dummy.model');
 const dummyV1 = require('./route/dummy.route');
 const signupRoute = require('./route/signup.route');
+const quizRoute = require("./route/quiz.route")
 
 const app = express();
 app.use(cookieParser());
@@ -22,6 +23,7 @@ console.log(port);
 
 app.use('/dummy', dummyV1);
 app.use(signupRoute);
+app.use(quizRoute)
 
 app.post('/', async (req, res) => {
 	const newData = req.body;
