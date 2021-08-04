@@ -8,6 +8,7 @@ import { makeStyles, Theme } from '@material-ui/core';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
+import axios from 'axios';
 
 const useStyles = makeStyles((theme: Theme) => {
 	return {
@@ -34,15 +35,29 @@ const Home = () => {
 	const navigate = useNavigate();
 
 	const classes = useStyles();
+	
 
-	const playQuiz = (i: Number) => {
-		if(state.token.length > 0){			
-			navigate(`/quiz/${i}/rules`);
-			dispatch({ type: 'RESET' });
-		}else {
-			navigate('/login')
+	const playQuiz = async (i: Number) => {
+		try{
+			let quizdata = await axios.get("http://localhost:3000/quiz")
+			console.log(quizdata)
+			if(quizdata.status === 200){
+				console.log("got in")
+				if(quizdata.data.success){
+					dispatch({type: "ADD_QUIZ", payload: quizdata.data.quiz})
+					if(state.token.length > 0){			
+						navigate(`/quiz/${i}/rules`);
+						dispatch({ type: 'RESET' });
+					}else {
+						navigate('/login')
+					}
+				}
+			}
+		}catch(error){
+			console.log(error)
 		}
 	};
+	console.log(state.quizData, "quiz Data")
 
 	return (
 		<div>

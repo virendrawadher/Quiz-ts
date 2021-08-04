@@ -1,9 +1,10 @@
 import React, { useReducer, createContext, useContext, Dispatch } from 'react';
 import QuizData from '../data/Quizdata';
-import { Options } from '../type-aliases/type';
+import { Options, Quizs } from '../type-aliases/type';
 import CalculateScore from '../utility/calculateScore';
 
 type IntialState = {
+	quizData: Quizs | null
 	currentQuestion: number;
 	currentScore: number;
 	showQuiz: boolean;
@@ -15,6 +16,7 @@ type IntialState = {
 };
 
 const intialState: IntialState = {
+	quizData: null,
 	currentQuestion: 0,
 	currentScore: 0,
 	showQuiz: true,
@@ -38,6 +40,7 @@ type ID = {
 };
 
 type ACTIONS =
+	| { type: 'ADD_QUIZ'; payload: Quizs}
 	| { type: 'SET_SCORE'; payload: PAYLOAD }
 	| { type: 'RESET' }
 	| { type: 'TIMER'; payload: ID }
@@ -70,6 +73,12 @@ export const useQuiz = () => {
 
 const ReducerQuiz = (state: IntialState, actions: ACTIONS) => {
 	switch (actions.type) {
+		case 'ADD_QUIZ':
+			console.log(actions.payload, "payload")
+			return {
+				...state,
+				quizData: actions.payload
+			}
 		case 'SET_SCORE':
 			const score = CalculateScore(
 				state.currentScore,
