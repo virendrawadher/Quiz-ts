@@ -14,6 +14,7 @@ const checkUser = (req, res, next) => {
 				next();
 			} else {
 				console.log({ decodedToken });
+				req.decode = decodedToken
 				next();
 			}
 		});
