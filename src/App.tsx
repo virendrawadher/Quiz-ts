@@ -33,29 +33,27 @@ const theme = createMuiTheme({
 function App() {
 	const [isUserLogin, setIsUserLogIn] = useState(true);
 
-	const { state } = useQuiz();
+	const { state, dispatch } = useQuiz();
+	
 
-	// useEffect(() => {
-	// 	(async function () {
-	// 		try {
-	// 			const response = await axios.post('http://localhost:3000/login', {
-	// 				email: 'Wain@google.com',
-	// 				password: 'Wain123',
-	// 			});
 
-	// 			console.log({ response });
-
-	// 			const res = await axios.get('http://localhost:3000/dummy', {
-	// 				headers: {
-	// 					Authorization: response.data.login.token,
-	// 				},
-	// 			});
-	// 			console.log({ res });
-	// 		} catch (error) {
-	// 			console.log(error);
-	// 		}
-	// 	})();
-	// }, []);
+	useEffect(() => {
+		(async function(){
+			try {
+				const data = await axios.get('http://localhost:3000/quiz/title')
+				if(data.status === 200){
+					if(data.data.success){
+						dispatch({type: 'TITLE', payload: data.data.title})
+					}else{
+						console.log(data.data.err)
+					}
+				}
+				
+			} catch (error) {
+				console.log(error)
+			}
+		})()
+	}, [])
 	return (
 		<div className='App'>
 			<ThemeProvider theme={theme}>

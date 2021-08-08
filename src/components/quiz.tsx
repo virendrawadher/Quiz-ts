@@ -21,7 +21,7 @@ const Quiz = (props: QuizProps) => {
 			<Typography variant='h5' className={classes.quizQuestion}>
 				Q.{' '}
 				{
-					QuizData.quiz[parseInt(id, 10)].questions[state.currentQuestion]
+					state.quizData[parseInt(id, 10)].questions[state.currentQuestion]
 						.question
 				}
 			</Typography>
@@ -32,7 +32,7 @@ const Quiz = (props: QuizProps) => {
 				<Typography variant='h6'>Time left:- {state.timer} sec</Typography>
 			</div>
 			<Typography variant='h6'>
-				{QuizData.quiz[parseInt(id, 10)].questions[state.currentQuestion]
+				{state.quizData[parseInt(id, 10)].questions[state.currentQuestion]
 					.code && (
 					<iframe
 						title='Code'
@@ -47,26 +47,26 @@ const Quiz = (props: QuizProps) => {
 				{/* </iframe> */}
 			</Typography>
 			<Grid container spacing={3}>
-				{QuizData.quiz[parseInt(id, 10)].questions[
+				{state.quizData[parseInt(id, 10)].questions[
 					state.currentQuestion
-				].options.map((option, i) => {
+				].option.map((opt, i) => {
 					return (
 						<Grid item xs={6} key={i}>
 							<Button
 								variant='outlined'
 								className={`${classes.singleOption} ${answerChecker(
-									option,
+									opt,
 									state.selected,
 									classes,
 								)}`}
 								onClick={() =>
 									dispatch({
 										type: 'SET_SCORE',
-										payload: { option, id },
+										payload: { opt, id },
 									})
 								}
 								disabled={state.isSelected ? true : false}>
-								{option.answer}
+								{opt.answer}
 							</Button>
 						</Grid>
 					);
@@ -74,20 +74,20 @@ const Quiz = (props: QuizProps) => {
 			</Grid>
 			<div className={classes.score}>
 				<div className={classes.score}>
-					<Button
+					{state.currentQuestion >= 1 && <Button
 						variant='outlined'
 						onClick={() => dispatch({ type: 'SET_PREVQUES', payload: { id } })}
 						startIcon={<KeyboardArrowLeftOutlinedIcon />}
 						className={`${classes.wrong} ${classes.prev}`}>
 						Previous
-					</Button>
+					</Button>}
 				</div>
 				<Button
 					variant='outlined'
 					onClick={() => dispatch({ type: 'SET_NEXTQUES', payload: { id } })}
 					endIcon={<KeyboardArrowRightOutlinedIcon />}
 					className={`${classes.select}`}>
-					Next
+					{state.currentQuestion === state.quizData[+id].questions.length - 1 ? 'Finish' : 'Next'}
 				</Button>
 			</div>
 		</div>

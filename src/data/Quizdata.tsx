@@ -1,6 +1,6 @@
 import { Quizs } from '../type-aliases/type';
 
-const QuizData: Quizs = {
+const QuizData= {
 	quiz: [
 		{
 			id: 1,
@@ -9,7 +9,7 @@ const QuizData: Quizs = {
 				{
 					question: 'When was JavaScript Invented',
 					points: 10,
-					options: [
+					option: [
 						{
 							answer: 'June 04, 1993',
 							isRight: false,
@@ -31,7 +31,7 @@ const QuizData: Quizs = {
 				{
 					question: 'How is the IF statement written in javascript',
 					points: 10,
-					options: [
+					option: [
 						{
 							answer: 'if condition',
 							isRight: false,
@@ -53,7 +53,7 @@ const QuizData: Quizs = {
 				{
 					question: "What is mean by 'this' keyword in JavaScript",
 					points: 10,
-					options: [
+					option: [
 						{
 							answer: 'It refers to current object',
 							isRight: true,
@@ -75,7 +75,7 @@ const QuizData: Quizs = {
 				{
 					question: 'In which case types JavaScript variables are declared',
 					points: 10,
-					options: [
+					option: [
 						{
 							answer: 'Snake Case',
 							isRight: false,
@@ -98,7 +98,7 @@ const QuizData: Quizs = {
 					question: 'What is Output of Following code',
 					code: `https://carbon.now.sh/embed?bg=rgba%28255%2C255%2C255%2C1%29&t=blackboard&wt=none&l=auto&ds=false&dsyoff=20px&dsblur=68px&wc=true&wa=false&pv=46px&ph=56px&ln=false&fl=1&fm=IBM+Plex+Mono&fs=14px&lh=143%25&si=false&es=2x&wm=false&code=let%2520a%2520%253D%252010%2520%250Afunction%2520b%28a%29%257B%2520%250A%2520%2520%2520%2520a%2520%253D%2520a%2520%252B%25205%250A%257D%2520%250Afunction%2520d%28%29%257B%250A%2520%2520%2520%2520alert%28a%29%250A%257D%2520%250Ad%28%29`,
 					points: 10,
-					options: [
+					option: [
 						{
 							answer: '15',
 							isRight: false,
@@ -120,7 +120,7 @@ const QuizData: Quizs = {
 				{
 					question: 'What are the data Structure in JavaScript',
 					points: 10,
-					options: [
+					option: [
 						{
 							answer: 'Linked list, Object',
 							isRight: false,
@@ -148,7 +148,7 @@ const QuizData: Quizs = {
 				{
 					question: 'dummy',
 					points: 10,
-					options: [
+					option: [
 						{
 							answer: '123',
 							isRight: true,
@@ -162,7 +162,7 @@ const QuizData: Quizs = {
 				{
 					question: 'dummy',
 					points: 10,
-					options: [
+					option: [
 						{
 							answer: '123',
 							isRight: true,

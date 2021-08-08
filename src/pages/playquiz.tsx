@@ -21,7 +21,7 @@ const PlayingQuiz = () => {
 		const interval = setInterval(() => {
 			if (state.timer === 0) {
 				dispatch({ type: 'TIMER', payload: { id } });
-				return () => clearInterval(interval);
+				clearInterval(interval);
 			}
 			dispatch({ type: 'TIMER', payload: { id } });
 		}, 1000);
@@ -37,7 +37,7 @@ const PlayingQuiz = () => {
 			<Card variant='outlined' className={classes.card}>
 				<CardContent>
 					<Typography variant='h4'>
-						{QuizData.quiz[parseInt(id, 10)].quizName}
+						{state.quizData[parseInt(id, 10)].quizName}
 					</Typography>
 					{state.showQuiz ? (
 						<Quiz id={id} classes={classes} />

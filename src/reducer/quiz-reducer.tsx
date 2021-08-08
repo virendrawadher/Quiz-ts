@@ -1,14 +1,15 @@
 import React, { useReducer, createContext, useContext, Dispatch } from 'react';
 import QuizData from '../data/Quizdata';
-import { Options, Quizs } from '../type-aliases/type';
+import { Options, Quiz } from '../type-aliases/type';
 import CalculateScore from '../utility/calculateScore';
 
 type IntialState = {
-	quizData: Quizs | null
+	title: TITLE[],
+	quizData: Quiz[]
 	currentQuestion: number;
 	currentScore: number;
 	showQuiz: boolean;
-	timer: number;
+	timer: Number;
 	selected: Options;
 	isSelected: Boolean;
 	showRules: Boolean;
@@ -16,7 +17,8 @@ type IntialState = {
 };
 
 const intialState: IntialState = {
-	quizData: null,
+	title: [],
+	quizData: [],
 	currentQuestion: 0,
 	currentScore: 0,
 	showQuiz: true,
@@ -31,7 +33,7 @@ const intialState: IntialState = {
 };
 
 type PAYLOAD = {
-	option: Options;
+	opt: Options;
 	id: string;
 };
 
@@ -39,15 +41,21 @@ type ID = {
 	id: string;
 };
 
+type TITLE = {
+	quizName: String
+}
+
+
 type ACTIONS =
-	| { type: 'ADD_QUIZ'; payload: Quizs}
+	| {type: 'TITLE', payload: TITLE[]}
+	| { type: 'ADD_QUIZ'; payload: Quiz[]}
 	| { type: 'SET_SCORE'; payload: PAYLOAD }
 	| { type: 'RESET' }
 	| { type: 'TIMER'; payload: ID }
 	| { type: 'SET_NEXTQUES'; payload: ID }
 	| { type: 'SET_PREVQUES'; payload: ID }
-	| { type: 'SET_START_QUIZ' }
-	| { type: 'SET_TOKEN'; payload: String };
+	| { type: 'SET_START_QUIZ', payload: ID }
+	| { type: 'SET_TOKEN'; payload: String};
 
 const QuizContext = createContext<{
 	state: IntialState;
@@ -73,6 +81,11 @@ export const useQuiz = () => {
 
 const ReducerQuiz = (state: IntialState, actions: ACTIONS) => {
 	switch (actions.type) {
+		case 'TITLE':
+			return{
+				...state,
+				title: actions.payload
+			}
 		case 'ADD_QUIZ':
 			console.log(actions.payload, "payload")
 			return {
@@ -82,15 +95,15 @@ const ReducerQuiz = (state: IntialState, actions: ACTIONS) => {
 		case 'SET_SCORE':
 			const score = CalculateScore(
 				state.currentScore,
-				QuizData.quiz[parseInt(actions.payload.id, 10)].questions[
+				state.quizData[parseInt(actions.payload.id, 10)].questions[
 					state.currentQuestion
 				],
-				actions.payload.option,
+				actions.payload.opt,
 			);
 
 			return {
 				...state,
-				selected: actions.payload.option,
+				selected: actions.payload.opt,
 				isSelected: true,
 				currentScore: score,
 			};
@@ -99,14 +112,14 @@ const ReducerQuiz = (state: IntialState, actions: ACTIONS) => {
 			const nextQues = state.currentQuestion + 1;
 			if (
 				nextQues <
-				QuizData.quiz[parseInt(actions.payload.id, 10)].questions.length
+				state.quizData[parseInt(actions.payload.id, 10)].questions.length
 			) {
 				return {
 					...state,
 					currentQuestion: nextQues,
 					selected: { ...state.selected, isRight: null },
 					isSelected: false,
-					timer: 10,
+					timer: +state.quizData[+actions.payload.id].questions[nextQues].time,
 				};
 			} else {
 				return {
@@ -124,7 +137,7 @@ const ReducerQuiz = (state: IntialState, actions: ACTIONS) => {
 					currentQuestion: prevQues,
 					selected: { ...state.selected, isRight: null },
 					isSelected: false,
-					timer: 10,
+					timer: +state.quizData[+actions.payload.id].questions[prevQues].time,
 				};
 			} else {
 				return {
@@ -150,32 +163,33 @@ const ReducerQuiz = (state: IntialState, actions: ACTIONS) => {
 				...state,
 				showRules: false,
 				showQuiz: true,
-				timer: 10,
+				timer: +state.quizData[+actions.payload.id].questions[0].time,
 			};
 
 		case 'TIMER':
-			// if (state.timer === 0) {
-			// 	const nextQues = state.currentQuestion + 1;
-			// 	if (
-			// 		nextQues <
-			// 		QuizData.quiz[parseInt(actions.payload.id, 10)].questions.length
-			// 	) {
-			// 		return {
-			// 			...state,
-			// 			currentQuestion: nextQues,
-			// 			selected: { ...state.selected, isRight: null },
-			// 			isSelected: false,
-			// 			timer: 10,
-			// 		};
-			// 	} else {
-			// 		return {
-			// 			...state,
-			// 			showQuiz: false,
-			// 		};
-			// 	}
-			// }
-			// return { ...state, timer: state.timer - 1 };
-			return { ...state };
+			if (state.timer === 0) {
+				const nextQues = state.currentQuestion + 1;
+				console.log(nextQues, "next ques")
+				if (
+					nextQues <
+					state.quizData[parseInt(actions.payload.id, 10)].questions.length
+				) {
+					return {
+						...state,
+						currentQuestion: nextQues,
+						selected: { ...state.selected, isRight: null },
+						isSelected: false,
+						timer: +state.quizData[+actions.payload.id].questions[nextQues].time,
+					};
+				} else {
+					return {
+						...state,
+						showQuiz: false,
+					};
+				}
+			}
+			return { ...state, timer: +state.timer - 1 };
+			// return { ...state };
 
 		case 'SET_TOKEN':
 			return { ...state, token: actions.payload };

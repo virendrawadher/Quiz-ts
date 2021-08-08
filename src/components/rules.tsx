@@ -30,22 +30,22 @@ const Rules = () => {
 
 	// const { classes } = props;
 
-	const { dispatch } = useQuiz();
+	const { state, dispatch } = useQuiz();
 
 	const rules = {
 		rule: [
 			`This quiz contains ${
-				QuizData.quiz[parseInt(id, 10)].questions.length
+				state.quizData[parseInt(id, 10)].questions.length
 			} questions`,
 			`Each questions has is own points`,
 			`Negative points of -5 for wrong answer`,
-			`10 secs are given to each questions to answer`,
+			`Each questions has it own time`,
 		],
 	};
 
 	const startQuiz = (i: Number) => {
 		navigate(`/quiz/${i}`);
-		dispatch({ type: 'SET_START_QUIZ' });
+		dispatch({ type: 'SET_START_QUIZ', payload: {id} });
 	};
 
 	return (
@@ -54,7 +54,7 @@ const Rules = () => {
 				<Card variant='outlined' className={classes.card}>
 					<CardContent>
 						<Typography variant='h4'>
-							{QuizData.quiz[parseInt(id, 10)].quizName}
+							{state.quizData[parseInt(id, 10)].quizName}
 						</Typography>
 						<Typography variant='h6' className={classes.rulesTitle}>
 							Rules

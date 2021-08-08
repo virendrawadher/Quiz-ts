@@ -9,6 +9,7 @@ import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
 import axios from 'axios';
+import { useEffect } from 'react';
 
 const useStyles = makeStyles((theme: Theme) => {
 	return {
@@ -36,34 +37,64 @@ const Home = () => {
 
 	const classes = useStyles();
 	
+	useEffect(() => {
+		(async function() {
+			if(localStorage.getItem('token')){
+				const token:String = JSON.parse(localStorage.getItem('token') as string)
+				console.log(token, "app token")
+				if(token){
+					const data = await axios.get('http://localhost:3000/quiz', {
+						headers: {
+							'Authorization': token
+						}
+					})
+					if(data.data.quiz){
+						if(data.status === 200){
+							if(data.data.success){
+								dispatch({type: 'ADD_QUIZ', payload: data.data.quiz})
+							}else{
+								console.log(data.data.err)
+							}
+						}
+					}
+					console.log(data, "app quiz data")
+				}else{
+					console.log("Token not found")
+				}
+			}
+		}
+		)()
+	}, [])
+	
 
 	const playQuiz = async (i: Number) => {
 		try{
-			let quizdata = await axios.get("http://localhost:3000/quiz")
-			console.log(quizdata)
-			if(quizdata.status === 200){
-				console.log("got in")
-				if(quizdata.data.success){
-					dispatch({type: "ADD_QUIZ", payload: quizdata.data.quiz})
-					if(state.token.length > 0){			
+			if(localStorage.getItem('token')){
+				const token:String = JSON.parse(localStorage.getItem('token') as string)
+				if(state.token || token){
+					if(state.token.length > 0 || token.length > 0){
 						navigate(`/quiz/${i}/rules`);
 						dispatch({ type: 'RESET' });
-					}else {
+					}else{
 						navigate('/login')
 					}
+				}else{
+					console.log("Token not found")
 				}
+			}else{
+				navigate('/login')
 			}
 		}catch(error){
 			console.log(error)
 		}
 	};
-	console.log(state.quizData, "quiz Data")
-
+	
+	console.log(state.title, "title")
 	return (
 		<div>
 			<Container className={classes.container}>
 				<Grid container spacing={1}>
-					{QuizData.quiz.map((q, i) => {
+					{state.title.map((q, i) => {
 						return (
 							<Grid
 								item
@@ -75,7 +106,7 @@ const Home = () => {
 								<Card className={classes.card}>
 									<CardHeader title={q.quizName} />
 									<CardMedia
-										title={q.quizName}
+										title={q.quizName as string}
 										image='https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fayay.co.uk%2Fbackgrounds%2Fdigital_art%2Fabstract%2Fethereal-wisps.jpg&f=1&nofb=1'
 										className={classes.media}
 									/>

@@ -5,10 +5,10 @@ export type Options = {
 
 export type Questions = {
 	question: string;
-	points: number;
-	time?: string;
+	point: number;
+	time: string;
 	code?: string,
-	options: Options[];
+	option: Options[];
 };
 
 export type Quiz = {

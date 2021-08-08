@@ -6,7 +6,7 @@ const CalculateScore = (
 	selectedOption: Options,
 ): number => {
 	return selectedOption.isRight
-		? currentScore + currentQues.points
+		? currentScore + currentQues.point
 		: currentScore - 5;
 };
 
